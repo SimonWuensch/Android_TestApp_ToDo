@@ -11,8 +11,6 @@
     <FrameLayout
         android:id="@+id/First_flFragment_Container"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="gone"
-        android:layout_marginTop="50dp" />
+        android:layout_height="match_parent" />
 
 </RelativeLayout>

@@ -2,10 +2,12 @@ package sim.ssn.com.todo.fragment.list;
 
 import android.app.Activity;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
 import sim.ssn.com.todo.R;
+import sim.ssn.com.todo.resource.Todo;
 
 /**
  * Created by Simon on 04.06.2015.
@@ -21,12 +23,13 @@ public class ViewHolderTodoList extends RecyclerView.ViewHolder {
         super(itemView);
         this.activity = activity;
         this.itemView = itemView;
-        tvListName = (TextView) itemView.findViewById(R.id.CardView_overview_project_tvListName);
-        tvCount = (TextView) itemView.findViewById(R.id.CardView_overview_project_tvCount);
+        tvListName = (TextView) itemView.findViewById(R.id.CardView_list_todo_tvListName);
+        tvCount = (TextView) itemView.findViewById(R.id.CardView_list_todo_tvCount);
     }
 
     public void assignData(String kind, int size){
+        Log.d(ViewHolderTodoList.class.getSimpleName(), "kind: " + kind + " - " + size);
         tvListName.setText(kind);
-        tvCount.setText(size);
+        tvCount.setText(Integer.toString(size));
     }
 }

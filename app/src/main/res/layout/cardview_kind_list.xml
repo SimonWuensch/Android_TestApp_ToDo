@@ -21,24 +21,24 @@
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="ProjectName"
-            android:id="@+id/CardView_list_todo_tvListName"
+            android:text="Description"
+            android:id="@+id/CardView_list_kind_tvDescription"
             android:gravity="left|center"
             android:paddingLeft="10dp"
             android:layout_marginLeft="15dp"
             android:layout_alignParentTop="true"
             android:layout_alignParentEnd="true" />
 
-        <TextView
-            android:layout_width="wrap_content"
+        <ImageView
+            android:layout_width="50dp"
             android:layout_height="50dp"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="Count"
-            android:id="@+id/CardView_list_todo_tvCount"
+            android:id="@+id/CardView_list_kind_ivStar"
             android:gravity="left|center"
             android:paddingLeft="10dp"
             android:layout_alignParentTop="true"
             android:layout_alignParentEnd="true"
+            android:src="@drawable/icon_star_not_filled"
             android:layout_marginRight="15dp" />
 
     </RelativeLayout>

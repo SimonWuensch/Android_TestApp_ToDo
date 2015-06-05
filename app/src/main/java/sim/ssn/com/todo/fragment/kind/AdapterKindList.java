@@ -1,8 +1,7 @@
-package sim.ssn.com.todo.fragment.list;
+package sim.ssn.com.todo.fragment.kind;
 
 import android.app.Activity;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,43 +9,42 @@ import android.view.ViewGroup;
 import java.util.List;
 import java.util.Map;
 
+import sim.ssn.com.todo.fragment.list.ViewHolderTodoList;
 import sim.ssn.com.todo.listener.CustomListener;
 import sim.ssn.com.todo.resource.Todo;
 
 /**
- * Created by Simon on 04.06.2015.
+ * Created by Simon on 05.06.2015.
  */
-public class AdapterTodoList extends  RecyclerView.Adapter<ViewHolderTodoList> {
-    private Map<String, List<Todo>> todoMap;
+public class AdapterKindList extends RecyclerView.Adapter<ViewHolderKindList>{
+    private List<Todo> todoList;
     private int layout;
     private Activity activity;
     private View inflatedView;
     private CustomListener customListener;
 
-
-    public AdapterTodoList(int layout, Activity activity){
+    public AdapterKindList(int layout, Activity activity, String kind){
         this.customListener = (CustomListener) activity;
-        this.todoMap = customListener.getDataBase().getTodoMap();
+        this.todoList = customListener.getDataBase().getTodoListByKind(kind);
         this.layout = layout;
         this.activity = activity;
     }
 
     @Override
-    public ViewHolderTodoList onCreateViewHolder(ViewGroup viewGroup, int position) {
+    public ViewHolderKindList onCreateViewHolder(ViewGroup viewGroup, int position) {
         inflatedView = LayoutInflater.from(viewGroup.getContext()).inflate(layout, viewGroup, false);
-        ViewHolderTodoList viewHolder = new ViewHolderTodoList(activity, inflatedView);
+        ViewHolderKindList viewHolder = new ViewHolderKindList(activity, inflatedView);
         return viewHolder;
     }
 
     @Override
-    public void onBindViewHolder(ViewHolderTodoList holder, int position) {
-        final String kind  = (String) todoMap.keySet().toArray()[position];
-        holder.assignData(kind, todoMap.get(kind).size());
-        final int pos = position;
+    public void onBindViewHolder(ViewHolderKindList holder, int position) {
+        final Todo todo = todoList.get(position);
+        holder.assignData(todo);
         inflatedView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                customListener.handleCardClick(kind);
+                customListener.handleCardClick(todo);
             }
         });
     }
@@ -58,6 +56,6 @@ public class AdapterTodoList extends  RecyclerView.Adapter<ViewHolderTodoList> {
 
     @Override
     public int getItemCount() {
-        return todoMap.size();
+        return todoList.size();
     }
 }

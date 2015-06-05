@@ -13,6 +13,8 @@ public class Todo {
 
     @JsonIgnore
     private long id;
+    private String description;
+    private boolean important;
     private String kind;
     private Date date;
     private Date memory;
@@ -20,10 +22,13 @@ public class Todo {
     private String node;
     private int color;
 
-    public Todo(){
-
+    public Todo(String kind, String description){
+        this.description = description;
+        this.kind = kind;
     }
 
+    public Todo(){
+    }
 
     @JsonIgnore
     public long getId() {
@@ -33,6 +38,22 @@ public class Todo {
     @JsonIgnore
     public void setId(long id) {
         this.id = id;
+    }
+
+    public boolean isImportant() {
+        return important;
+    }
+
+    public void setImportant(boolean important) {
+        this.important = important;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public String toJson(){

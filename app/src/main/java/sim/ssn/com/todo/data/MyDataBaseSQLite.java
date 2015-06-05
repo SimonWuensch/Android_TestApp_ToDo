@@ -76,14 +76,18 @@ public class MyDataBaseSQLite extends SQLiteOpenHelper {
         return db.query(TABLE_TODO, null, null, null, null, null, _ID + " DESC");
     }
 
-    private List<Todo> getTodoListByKind(String kind){
+    public List<Todo> getTodoListByKind(String kind){
         Map<String, List<Todo>> todoMap = getTodoMap();
         if(kind != null){
             if(todoMap.containsKey(kind)){
-                return (List<Todo>) getTodoMap().get(kind).toArray()[0];
+                return todoMap.get(kind);
             }
         }else{
-            return (List<Todo>) getTodoMap().values().toArray()[0];
+            List<Todo> todoList = new ArrayList<Todo>();
+            for(String key : todoMap.keySet()){
+                todoList.addAll(todoMap.get(key));
+            }
+            return todoList;
         }
         return new ArrayList<>();
     }
@@ -96,7 +100,11 @@ public class MyDataBaseSQLite extends SQLiteOpenHelper {
         Map<String, List<Todo>> todoMap = new HashMap<>();
 
         for(String kind : kinds){
-            todoMap.put(kind, new ArrayList<Todo>());
+            todoMap.put(kind, new ArrayList<Todo>(){
+                {
+                    add(new Todo());
+                }
+            });
         }
 
         Cursor cursor = query();
