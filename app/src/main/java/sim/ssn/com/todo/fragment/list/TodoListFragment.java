@@ -28,13 +28,14 @@ public class TodoListFragment extends Fragment{
         public void onAttach(Activity activity) {
             super.onAttach(activity);
             clickListener = (CustomListener) activity;
-            ivAdd = (ImageView) activity.findViewById(R.id.fList_ivAdd);
-            //ivAdd.setOnClickListener(clickListener.handleAddKind());
         }
 
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_todo_list, container, false);
+
+                ivAdd = (ImageView) rootView.findViewById(R.id.fList_ivAdd);
+                ivAdd.setOnClickListener(clickListener.handleAddKind());
 
                 RecyclerView mRecyclerView = (RecyclerView) rootView.findViewById(R.id.fList_recyclerview);
                 mRecyclerView.setHasFixedSize(true);

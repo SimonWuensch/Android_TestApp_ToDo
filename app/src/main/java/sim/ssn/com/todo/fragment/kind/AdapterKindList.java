@@ -11,6 +11,7 @@ import java.util.Map;
 
 import sim.ssn.com.todo.fragment.list.ViewHolderTodoList;
 import sim.ssn.com.todo.listener.CustomListener;
+import sim.ssn.com.todo.resource.Kind;
 import sim.ssn.com.todo.resource.Todo;
 
 /**
@@ -23,9 +24,9 @@ public class AdapterKindList extends RecyclerView.Adapter<ViewHolderKindList>{
     private View inflatedView;
     private CustomListener customListener;
 
-    public AdapterKindList(int layout, Activity activity, String kind){
+    public AdapterKindList(int layout, Activity activity, List<Todo> todoList){
         this.customListener = (CustomListener) activity;
-        this.todoList = customListener.getDataBase().getTodoListByKind(kind);
+        this.todoList = todoList;
         this.layout = layout;
         this.activity = activity;
     }

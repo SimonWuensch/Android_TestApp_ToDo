@@ -28,7 +28,6 @@ public class ViewHolderTodoList extends RecyclerView.ViewHolder {
     }
 
     public void assignData(String kind, int size){
-        Log.d(ViewHolderTodoList.class.getSimpleName(), "kind: " + kind + " - " + size);
         tvListName.setText(kind);
         tvCount.setText(Integer.toString(size));
     }

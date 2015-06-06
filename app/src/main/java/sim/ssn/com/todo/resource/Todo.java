@@ -15,16 +15,16 @@ public class Todo {
     private long id;
     private String description;
     private boolean important;
-    private String kind;
+    private long kindID;
     private Date date;
     private Date memory;
     private List<String> subTask;
     private String node;
     private int color;
 
-    public Todo(String kind, String description){
+    public Todo(long kindID, String description){
         this.description = description;
-        this.kind = kind;
+        this.kindID = kindID;
     }
 
     public Todo(){
@@ -40,21 +40,6 @@ public class Todo {
         this.id = id;
     }
 
-    public boolean isImportant() {
-        return important;
-    }
-
-    public void setImportant(boolean important) {
-        this.important = important;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
 
     public String toJson(){
         Genson genson = new Genson();
@@ -66,12 +51,28 @@ public class Todo {
         return genson.deserialize(jsonString, Todo.class);
     }
 
-    public String getKind() {
-        return kind;
+    public String getDescription() {
+        return description;
     }
 
-    public void setKind(String kind) {
-        this.kind = kind;
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public boolean isImportant() {
+        return important;
+    }
+
+    public void setImportant(boolean important) {
+        this.important = important;
+    }
+
+    public long getKindID() {
+        return kindID;
+    }
+
+    public void setKindID(long kindID) {
+        this.kindID = kindID;
     }
 
     public Date getDate() {

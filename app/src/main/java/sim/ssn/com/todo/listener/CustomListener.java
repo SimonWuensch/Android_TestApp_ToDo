@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import sim.ssn.com.todo.data.MyDataBaseSQLite;
+import sim.ssn.com.todo.resource.Kind;
 import sim.ssn.com.todo.resource.Todo;
 
 /**
@@ -19,9 +20,11 @@ public interface CustomListener {
     void deleteTodo(View view, Todo todo);
     MyDataBaseSQLite getDataBase();
 
-    void handleCardClick(String kind);
+    void handleCardClick(Kind kind);
     void handleCardClick(Todo todo);
+    void handleEditKind(Kind kind);
 
     View.OnClickListener handleAddTodo();
     View.OnClickListener handleAddKind();
+
 }
