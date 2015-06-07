@@ -7,24 +7,21 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import java.util.List;
-import java.util.Map;
 
-import sim.ssn.com.todo.fragment.list.ViewHolderTodoList;
 import sim.ssn.com.todo.listener.CustomListener;
-import sim.ssn.com.todo.resource.Kind;
 import sim.ssn.com.todo.resource.Todo;
 
 /**
  * Created by Simon on 05.06.2015.
  */
-public class AdapterKindList extends RecyclerView.Adapter<ViewHolderKindList>{
+public class AdapterTodoList extends RecyclerView.Adapter<ViewHolderTodoList>{
     private List<Todo> todoList;
     private int layout;
     private Activity activity;
     private View inflatedView;
     private CustomListener customListener;
 
-    public AdapterKindList(int layout, Activity activity, List<Todo> todoList){
+    public AdapterTodoList(int layout, Activity activity, List<Todo> todoList){
         this.customListener = (CustomListener) activity;
         this.todoList = todoList;
         this.layout = layout;
@@ -32,16 +29,23 @@ public class AdapterKindList extends RecyclerView.Adapter<ViewHolderKindList>{
     }
 
     @Override
-    public ViewHolderKindList onCreateViewHolder(ViewGroup viewGroup, int position) {
+    public ViewHolderTodoList onCreateViewHolder(ViewGroup viewGroup, int position) {
         inflatedView = LayoutInflater.from(viewGroup.getContext()).inflate(layout, viewGroup, false);
-        ViewHolderKindList viewHolder = new ViewHolderKindList(activity, inflatedView);
+        ViewHolderTodoList viewHolder = new ViewHolderTodoList(activity, inflatedView);
         return viewHolder;
     }
 
     @Override
-    public void onBindViewHolder(ViewHolderKindList holder, int position) {
+    public void onBindViewHolder(ViewHolderTodoList holder, final int position) {
         final Todo todo = todoList.get(position);
         holder.assignData(todo);
+        inflatedView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                customListener.handleEditTodo(todoList.get(position));
+                return false;
+            }
+        });
         inflatedView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

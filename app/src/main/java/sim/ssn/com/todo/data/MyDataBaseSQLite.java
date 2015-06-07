@@ -21,6 +21,15 @@ import sim.ssn.com.todo.resource.Todo;
  */
 public class MyDataBaseSQLite extends SQLiteOpenHelper {
 
+    private List<String> defaultKindList = new ArrayList<String>(){
+        {
+            add("Arbeit");
+            add("Studium");
+            add("Lernen");
+            add("Besorgungen");
+        }
+    };
+
     private boolean updateKindList = true;
     private boolean updateTodoMap = true;
 
@@ -30,7 +39,7 @@ public class MyDataBaseSQLite extends SQLiteOpenHelper {
     private static final String TAG = MyDataBaseSQLite.class.getSimpleName();
 
     private static final String DATABASE_NAME = "Todo.db";
-    private static final int DATABASE_VERSION = 2;
+    private static final int DATABASE_VERSION = 3;
 
     private static final String _ID = "id";
     private static final String _KIND = "kind";
@@ -62,6 +71,15 @@ public class MyDataBaseSQLite extends SQLiteOpenHelper {
 
     public MyDataBaseSQLite(Context context){
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
+        ifFirstStart();
+    }
+
+    private void ifFirstStart(){
+        if(getKindList().size() == 0){
+            for(String kind : defaultKindList){
+                addKind(kind);
+            }
+        }
     }
 
     @Override
@@ -227,29 +245,33 @@ public class MyDataBaseSQLite extends SQLiteOpenHelper {
         }
     }
 
-    public void updateKind(Kind oldKind, Kind newKind){
+    public void updateKind(Kind kind, String newKindName){
         try{
-            deleteKind(oldKind);
-            addKind(newKind.getName());
-        }catch(SQLiteException e){
-            Log.e(TAG, "UPDATE ERROR ", e);
-        }finally{
-            Log.d(TAG, "UPDATE from: \t" + oldKind.getName() + "\nto: \t" + newKind.getName());
+        SQLiteDatabase db = getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(_KIND, newKindName);
+        db.update(TABLE_KIND, values, _ID + " = ?", new String[] {
+                Long.toString(kind.getId())});
+        }catch(Throwable t){
+            Log.d(TAG, "UPDATE ERROR KIND from " + kind.getName() + " to " +  newKindName);
+        }finally {
+            Log.d(TAG, "UPDATE KIND from: " + kind.getName()+ " to: " + newKindName);
         }
-        kindList = getKindList();
-        updateKindList = true;
+        kind.setName(newKindName);
     }
 
-    public void updateTodo(Todo oldTodo, Todo newTodo){
+    public void updateTodo(Todo newTodo){
         try{
-           deleteTodo(oldTodo);
-           addTodo(newTodo);
+            SQLiteDatabase db = getWritableDatabase();
+            ContentValues values = new ContentValues();
+            values.put(_TODO_JSON, newTodo.toJson());
+            db.update(TABLE_TODO, values, _ID + " = ?", new String[] {
+                    Long.toString(newTodo.getId())});
         }catch(SQLiteException e){
-            Log.e(TAG, "UPDATE ERROR ", e);
+            Log.e(TAG, "UPDATE ERROR TODO ", e);
         }finally{
-            Log.d(TAG, "UPDATE from: \t" + oldTodo.toJson() + "\nto: \t" + newTodo.toJson());
+            Log.d(TAG, "UPDATE TODO " + newTodo.toJson());
         }
-        todoMap = getTodoMap();
-        updateTodoMap = true;
+        //todoMap = getTodoMap();
     }
 }

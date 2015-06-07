@@ -31,7 +31,7 @@ public class Kind {
 
     public String toString(){
         return new StringBuilder()//
-                .append("ID").append(id).append(" ")//
+                .append("ID: ").append(id).append(" ")//
                 .append("KindName: ").append(name).toString();
     }
 }

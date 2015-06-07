@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/layout_root"
+    android:id="@+id/dialog_kind"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical"
@@ -14,7 +14,7 @@
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
     <EditText
-        android:id="@+id/dialog_add_kind_etKindName"
+        android:id="@+id/dialog_kind_etKindName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" >
 

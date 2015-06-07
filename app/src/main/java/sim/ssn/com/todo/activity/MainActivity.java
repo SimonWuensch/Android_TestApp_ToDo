@@ -8,12 +8,11 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
 
 import sim.ssn.com.todo.R;
 import sim.ssn.com.todo.data.MyDataBaseSQLite;
-import sim.ssn.com.todo.fragment.kind.KindListFragment;
-import sim.ssn.com.todo.fragment.list.TodoListFragment;
+import sim.ssn.com.todo.fragment.kind.TodoListFragment;
+import sim.ssn.com.todo.fragment.todo.KindListFragment;
 import sim.ssn.com.todo.listener.CustomListener;
 import sim.ssn.com.todo.resource.Kind;
 import sim.ssn.com.todo.resource.Todo;
@@ -22,10 +21,10 @@ import sim.ssn.com.todo.ui.DialogManager;
 
 public class MainActivity extends Activity implements CustomListener{
 
-    public static String FRAGMENT_ORDERLIST = "orderlistfragment";
+    public static String FRAGMENT_TODOLIST = "orderlistfragment";
     public static String FRAGMENT_KINDLIST = "kindlistfragment";
 
-    private TodoListFragment todoListFragment;
+    private KindListFragment kindListFragment;
     private MyDataBaseSQLite dataBase;
 
     @Override
@@ -33,7 +32,7 @@ public class MainActivity extends Activity implements CustomListener{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         dataBase = new MyDataBaseSQLite(this);
-        showListTodoFragment(true);
+        showKindListFragment(true);
     }
 
     @Override
@@ -53,12 +52,22 @@ public class MainActivity extends Activity implements CustomListener{
         return super.onOptionsItemSelected(item);
     }
 
-    public void showListTodoFragment(boolean showNew){
+    public void showKindListFragment(boolean showNew){
         if(showNew){
-            getFragmentManager().beginTransaction().replace(R.id.First_flFragment_Container, new TodoListFragment(), FRAGMENT_ORDERLIST).commit();
+            getFragmentManager().beginTransaction().replace(R.id.First_flFragment_Container, new KindListFragment(), FRAGMENT_KINDLIST).commit();
             return;
         }
-        getFragmentManager().beginTransaction().replace(R.id.First_flFragment_Container, todoListFragment, FRAGMENT_ORDERLIST).commit();
+        getFragmentManager().beginTransaction().replace(R.id.First_flFragment_Container, kindListFragment, FRAGMENT_KINDLIST).commit();
+    }
+
+    @Override
+    public void onBackPressed() {
+        String fragmentTag = getActiveFragment();
+        if(fragmentTag == null){
+            super.onBackPressed();
+        }else if(fragmentTag.equals(FRAGMENT_TODOLIST)){
+            showKindListFragment(true);
+        }
     }
 
     public String getActiveFragment() {
@@ -72,26 +81,11 @@ public class MainActivity extends Activity implements CustomListener{
     }
 
     @Override
-    public void addTodo(View view, Todo todo) {
-        dataBase.addTodo(todo);
-    }
-
-    @Override
-    public void updateTodo(View view, Todo oldTodo, Todo newTodo) {
-        dataBase.updateTodo(oldTodo, newTodo);
-    }
-
-    @Override
-    public void deleteTodo(View view, Todo todo) {
-        dataBase.deleteTodo(todo);
-    }
-
-    @Override
-     public void handleCardClick(Kind kind) {
-        Log.d(MainActivity.class.getSimpleName(), "Kind Clicked: " + kind);
+     public void handleCardClick(long kindId) {
+        Log.d(MainActivity.class.getSimpleName(), "Kind Clicked: " + kindId);
         FragmentTransaction fragmentManager =  getFragmentManager().beginTransaction();
-        fragmentManager.replace(R.id.First_flFragment_Container, KindListFragment.newInstance(kind), FRAGMENT_KINDLIST);
-        fragmentManager.addToBackStack(FRAGMENT_ORDERLIST);
+        fragmentManager.replace(R.id.First_flFragment_Container, TodoListFragment.newInstance(kindId), FRAGMENT_TODOLIST);
+        fragmentManager.addToBackStack(FRAGMENT_TODOLIST);
         fragmentManager.commit();
     }
 
@@ -106,18 +100,24 @@ public class MainActivity extends Activity implements CustomListener{
     }
 
     @Override
-      public void handleEditKind(Kind kind){
-        DialogManager.showEditKindDialog(this, kind);
+    public void handleEditTodo(Todo todo){
+        DialogManager.showTodoDialog(this,todo);
     }
 
     @Override
-    public View.OnClickListener handleAddTodo(){
+    public View.OnClickListener handleAddTodo(final long kindId){
+        final Activity activity = this;
         return new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                Toast.makeText(getBaseContext(), "Add Todo Button clicked", Toast.LENGTH_SHORT).show();
+                DialogManager.showTodoDialog(activity,new Todo(kindId, ""));
             }
         };
+    }
+
+    @Override
+    public void handleEditKind(Kind kind){
+        DialogManager.showKindDialog(this, kind);
     }
 
     @Override
@@ -126,8 +126,7 @@ public class MainActivity extends Activity implements CustomListener{
         return new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                Toast.makeText(getBaseContext(), "Add Kind Button clicked", Toast.LENGTH_SHORT).show();
-                DialogManager.showAddKindDialog(activity);
+                DialogManager.showKindDialog(activity);
             }
         };
     }

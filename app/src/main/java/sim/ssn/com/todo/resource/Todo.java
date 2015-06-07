@@ -15,6 +15,7 @@ public class Todo {
     private long id;
     private String description;
     private boolean important;
+    private boolean finished;
     private long kindID;
     private Date date;
     private Date memory;
@@ -29,7 +30,6 @@ public class Todo {
 
     public Todo(){
     }
-
     @JsonIgnore
     public long getId() {
         return id;
@@ -40,7 +40,6 @@ public class Todo {
         this.id = id;
     }
 
-
     public String toJson(){
         Genson genson = new Genson();
         return genson.serialize(this);
@@ -49,6 +48,14 @@ public class Todo {
     public static Todo JsonToProject(String jsonString){
         Genson genson = new Genson();
         return genson.deserialize(jsonString, Todo.class);
+    }
+
+    public boolean isFinished() {
+        return finished;
+    }
+
+    public void setFinished(boolean finished) {
+        this.finished = finished;
     }
 
     public String getDescription() {
@@ -65,6 +72,11 @@ public class Todo {
 
     public void setImportant(boolean important) {
         this.important = important;
+    }
+
+    public boolean toggleImportant(){
+        setImportant(isImportant() ? false : true);
+        return isImportant();
     }
 
     public long getKindID() {

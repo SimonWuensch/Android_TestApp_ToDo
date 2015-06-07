@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/dialog_todo"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical"
+    android:padding="10dp" >
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="75dp">
+
+            <View
+                android:id="@+id/myRectangleView"
+                android:layout_width="match_parent"
+                android:layout_height="170dp"
+                android:background="@drawable/rectangle"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentStart="true" />
+
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:id="@+id/dialog_todo_ivStar"
+                android:src="@drawable/icon_star_not_filled"
+                android:layout_marginRight="20dp"
+                android:layout_centerVertical="true"
+                android:layout_alignParentEnd="true" />
+
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/dialog_todo_cbFinished"
+                android:checked="false"
+                android:layout_centerVertical="true"
+                android:layout_alignParentStart="true"
+                android:layout_marginLeft="5dp" />
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/dialog_todo_etDescription"
+                android:text="Description"
+                android:layout_marginRight="60dp"
+                android:textSize="20dp"
+                android:textIsSelectable="false"
+                android:layout_alignBottom="@+id/dialog_todo_cbFinished"
+                android:layout_toEndOf="@+id/dialog_todo_cbFinished" />
+
+        </RelativeLayout>
+
+</LinearLayout>

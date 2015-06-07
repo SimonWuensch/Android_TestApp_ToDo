@@ -15,16 +15,14 @@ import sim.ssn.com.todo.resource.Todo;
  */
 public interface CustomListener {
 
-    void addTodo(View view, Todo todo);
-    void updateTodo(View view, Todo oldTodo, Todo newTodo);
-    void deleteTodo(View view, Todo todo);
     MyDataBaseSQLite getDataBase();
 
-    void handleCardClick(Kind kind);
+    void handleCardClick(long kindId);
     void handleCardClick(Todo todo);
     void handleEditKind(Kind kind);
+    void handleEditTodo(Todo todo);
 
-    View.OnClickListener handleAddTodo();
+    View.OnClickListener handleAddTodo(final long kindId);
     View.OnClickListener handleAddKind();
 
 }

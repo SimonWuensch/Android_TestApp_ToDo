@@ -1,10 +1,8 @@
 package sim.ssn.com.todo.fragment.kind;
 
 import android.app.Activity;
-import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
-import android.renderscript.Script;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -12,41 +10,33 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import sim.ssn.com.todo.R;
 import sim.ssn.com.todo.activity.MainActivity;
-import sim.ssn.com.todo.fragment.list.AdapterTodoList;
 import sim.ssn.com.todo.listener.CustomListener;
-import sim.ssn.com.todo.resource.Kind;
 import sim.ssn.com.todo.resource.Todo;
 
-public class KindListFragment extends Fragment {
-    private static String TODOKIND = "todoKind";
+public class TodoListFragment extends Fragment {
     private static String TODOKINDID = "todoKindID";
 
     private CustomListener clickListener;
 
     private ImageView ivAdd;
-
     private List<Todo> todoList;
-    private Kind kind;
+    private long kindId;
 
-    public static KindListFragment newInstance(Kind kind) {
-        KindListFragment fragment = new KindListFragment();
+    public static TodoListFragment newInstance(long kindId) {
+        TodoListFragment fragment = new TodoListFragment();
         Bundle projectMap = new Bundle();
-        projectMap.putLong(TODOKINDID, kind.getId());
-        projectMap.putString(TODOKIND, kind.getName());
+        projectMap.putLong(TODOKINDID, kindId);
         fragment.setArguments(projectMap);
         return fragment;
     }
 
     private void loadArguments(){
         if (getArguments() != null) {
-            String kindName = getArguments().getString(TODOKIND);
-            long id = getArguments().getLong(TODOKINDID);
-            this.kind = new Kind(id, kindName);
+           kindId = getArguments().getLong(TODOKINDID);
         }
     }
 
@@ -60,21 +50,21 @@ public class KindListFragment extends Fragment {
         super.onAttach(activity);
         loadArguments();
         clickListener = (CustomListener) activity;
-        this.todoList = ((MainActivity)activity).getDataBase().getTodoListByKind(kind.getId());
+        this.todoList = ((MainActivity)activity).getDataBase().getTodoListByKind(kindId);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_kind_list, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_todo_list, container, false);
 
-        ivAdd = (ImageView) rootView.findViewById(R.id.fKind_ivAdd);
-        ivAdd.setOnClickListener(clickListener.handleAddTodo());
+        ivAdd = (ImageView) rootView.findViewById(R.id.fTodo_ivAdd);
+        ivAdd.setOnClickListener(clickListener.handleAddTodo(kindId));
 
-        RecyclerView mRecyclerView = (RecyclerView) rootView.findViewById(R.id.fKind_recyclerview);
+        RecyclerView mRecyclerView = (RecyclerView) rootView.findViewById(R.id.fTodo_recyclerview);
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(rootView.getContext()));
 
-        RecyclerView.Adapter mAdapter = new AdapterKindList(R.layout.cardview_kind_list, getActivity(), todoList);
+        RecyclerView.Adapter mAdapter = new AdapterTodoList(R.layout.cardview_todo, getActivity(), todoList);
         mRecyclerView.setAdapter(mAdapter);
         return rootView;
     }
