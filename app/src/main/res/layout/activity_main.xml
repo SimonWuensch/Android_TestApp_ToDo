@@ -8,9 +8,29 @@
     android:id="@+id/activity_main"
     tools:context=".MainActivity">
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:id="@+id/activity_main_rlFragmentContrainer"
+        android:background="@drawable/rectangle"
+        android:layout_margin="5dp">
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:id="@+id/activity_main_tvLoginName"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true" />
+
+    </RelativeLayout>
+
     <FrameLayout
         android:id="@+id/First_flFragment_Container"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:layout_below="@+id/activity_main_rlFragmentContrainer"
+        android:layout_alignParentStart="true" />
 
 </RelativeLayout>

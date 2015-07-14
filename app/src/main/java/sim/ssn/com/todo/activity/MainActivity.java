@@ -3,23 +3,30 @@ package sim.ssn.com.todo.activity;
 import android.app.Activity;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
+import android.widget.EditText;
+import android.widget.TextView;
 
 import sim.ssn.com.todo.R;
+import sim.ssn.com.todo.data.CustomSharedPreferences;
 import sim.ssn.com.todo.data.MyDataBaseSQLite;
 import sim.ssn.com.todo.fragment.kind.TodoListFragment;
 import sim.ssn.com.todo.fragment.todo.KindListFragment;
 import sim.ssn.com.todo.listener.CustomListener;
 import sim.ssn.com.todo.resource.Kind;
 import sim.ssn.com.todo.resource.Todo;
+import sim.ssn.com.todo.resource.User;
 import sim.ssn.com.todo.ui.DialogManager;
 
 
-public class MainActivity extends Activity implements CustomListener{
+public class MainActivity extends ActionBarActivity implements CustomListener{
 
     public static String FRAGMENT_TODOLIST = "orderlistfragment";
     public static String FRAGMENT_KINDLIST = "kindlistfragment";
@@ -29,9 +36,14 @@ public class MainActivity extends Activity implements CustomListener{
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        requestWindowFeature(Window.FEATURE_ACTION_BAR);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         dataBase = new MyDataBaseSQLite(this);
+
+        TextView etLoginName = (TextView) findViewById(R.id.activity_main_tvLoginName);
+        User user = CustomSharedPreferences.getUser(this);
+        etLoginName.setText(user.getUserName());
         showKindListFragment(true);
     }
 
@@ -44,11 +56,12 @@ public class MainActivity extends Activity implements CustomListener{
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-
-        if (id == R.id.action_settings) {
+        if (id == R.id.menu_activity_main_logout) {
+            CustomSharedPreferences.removeUser(this);
+            Intent intent = new Intent(this, LoginActivity.class);
+            startActivity(intent);
             return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 

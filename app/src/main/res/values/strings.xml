@@ -12,6 +12,16 @@
     <string name="title_activity_order_list">OrderListActivity</string>
     <string name="title_activity_all">AllActivity</string>
 
-<!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+
+    <!-- Login Activity -->
+    <string name="activity_login_title">Login</string>
+    <string name="activity_login_bLogin">Login</string>
+    <string name="activity_login_prompttext_name">Login name</string>
+    <string name="activity_login_prompttext_password">********</string>
+
+
+
+
 </resources>

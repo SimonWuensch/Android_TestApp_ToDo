@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import sim.ssn.com.todo.R;
 import sim.ssn.com.todo.activity.MainActivity;
@@ -46,7 +47,11 @@ public class DialogManager {
                                 } else if (positiveButton.getText().toString().equals(UPDATEBUTTON)) {
                                     database.updateKind(kind, etKindName.getText().toString());
                                 } else if (positiveButton.getText().toString().equals(ADDBUTTON)) {
-                                    database.addKind(etKindName.getText().toString());
+                                    if (etKindName.getText().toString().length() > 0) {
+                                        database.addKind(etKindName.getText().toString());
+                                    } else {
+                                        Toast.makeText(activity, "Der Listenname darf nicht leer sein!", Toast.LENGTH_SHORT).show();
+                                    }
                                 }
                                 ((MainActivity) activity).showKindListFragment(true);
                             }
