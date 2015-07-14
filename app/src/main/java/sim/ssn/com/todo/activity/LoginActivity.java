@@ -3,6 +3,7 @@ package sim.ssn.com.todo.activity;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -10,17 +11,29 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.internal.CallbackManagerImpl;
+import com.facebook.login.LoginResult;
+import com.facebook.login.widget.LoginButton;
+
 import sim.ssn.com.todo.R;
 import sim.ssn.com.todo.data.CustomSharedPreferences;
+import sim.ssn.com.todo.data.FacebookManager;
 import sim.ssn.com.todo.resource.User;
 
 public class LoginActivity extends Activity {
 
+    private final static int FACEBOOK_REQUEST_CODE = 20;
     private static String TAG = LoginActivity.class.getSimpleName();
 
     private EditText etLoginName;
     private EditText etLoginPassword;
     private Button bLogin;
+
+    private LoginButton buttonToLoginWithFacebook;
+    private CallbackManager mCallbackManager;
 
     private Intent mainActivityIntent;
 
@@ -66,6 +79,37 @@ public class LoginActivity extends Activity {
 
             }
         });
+
+        mCallbackManager = CallbackManager.Factory.create();
+
+        buttonToLoginWithFacebook = (LoginButton) findViewById(R.id.activity_login_bFaceBook);
+        buttonToLoginWithFacebook.setReadPermissions("public_profile","email","user_birthday");
+        buttonToLoginWithFacebook.registerCallback(mCallbackManager,
+                new FacebookCallback<LoginResult>() {
+                    public void onSuccess(LoginResult loginResult) {
+                        Log.d("FB", "Access Token: " + loginResult.getAccessToken());
+                        FacebookManager.getFacebookProfile(loginResult.getAccessToken());
+                    }
+                    @Override
+                    public void onCancel() {
+                        Log.d("FB", "Cancel");
+                    }
+
+                    @Override
+                    public void onError(FacebookException e) {
+                        e.printStackTrace();
+                        Log.d("FB", "Error");
+                    }
+                }, FACEBOOK_REQUEST_CODE );
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        int expected = CallbackManagerImpl.RequestCodeOffset.Login.toRequestCode();
+        if( requestCode == expected ){
+            mCallbackManager.onActivityResult(requestCode,resultCode, data);
+        }
     }
 
     @Override

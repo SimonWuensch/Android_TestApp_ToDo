@@ -26,4 +26,5 @@ dependencies {
     compile 'com.android.support:recyclerview-v7:21.+'
     compile 'commons-io:commons-io:2.4'
     compile 'com.owlike:genson:1.2'
+    compile 'com.facebook.android:facebook-android-sdk:4.0.0'
 }

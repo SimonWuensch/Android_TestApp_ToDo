@@ -22,6 +22,9 @@
     <string name="activity_login_prompttext_password">********</string>
 
 
+    <string name="facebook_app_id">604123266357128</string>
+
+
 
 
 </resources>
