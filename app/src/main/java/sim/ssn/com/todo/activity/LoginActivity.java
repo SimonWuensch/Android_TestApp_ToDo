@@ -2,7 +2,11 @@ package sim.ssn.com.todo.activity;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.Signature;
 import android.os.Bundle;
+import android.util.Base64;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -14,9 +18,13 @@ import android.widget.Toast;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
+import com.facebook.FacebookSdk;
 import com.facebook.internal.CallbackManagerImpl;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
+
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 import sim.ssn.com.todo.R;
 import sim.ssn.com.todo.data.CustomSharedPreferences;
@@ -40,6 +48,7 @@ public class LoginActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        FacebookSdk.sdkInitialize(getApplicationContext());
         setContentView(R.layout.activity_login);
         initVariables();
         checkSharedPrefsLogin();
@@ -49,7 +58,7 @@ public class LoginActivity extends Activity {
         User user = CustomSharedPreferences.getUser(this);
         if(!user.isDefaultUser()){
             mainActivityIntent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-            startActivity(mainActivityIntent);
+            doLogin();
             this.finish();
         }
     }
@@ -88,7 +97,7 @@ public class LoginActivity extends Activity {
                 new FacebookCallback<LoginResult>() {
                     public void onSuccess(LoginResult loginResult) {
                         Log.d("FB", "Access Token: " + loginResult.getAccessToken());
-                        FacebookManager.getFacebookProfile(loginResult.getAccessToken());
+                        FacebookManager.getFacebookProfile(LoginActivity.this, loginResult.getAccessToken());
                     }
                     @Override
                     public void onCancel() {
@@ -101,6 +110,10 @@ public class LoginActivity extends Activity {
                         Log.d("FB", "Error");
                     }
                 }, FACEBOOK_REQUEST_CODE );
+    }
+
+    public void doLogin(){
+        startActivity(mainActivityIntent);
     }
 
     @Override

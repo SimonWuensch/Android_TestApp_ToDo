@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.net.Uri;
 import android.util.Log;
 import android.view.View;
+import android.widget.TextView;
 
 import com.facebook.AccessToken;
 import com.facebook.GraphRequest;
@@ -13,13 +14,19 @@ import com.facebook.share.widget.ShareDialog;
 
 import org.json.JSONObject;
 
+import sim.ssn.com.todo.activity.LoginActivity;
+import sim.ssn.com.todo.resource.User;
+
 public class FacebookManager {
 
-    public static void getFacebookProfile( AccessToken accessToken ) {
+    public static void getFacebookProfile(final Activity activity, AccessToken accessToken) {
         GraphRequest request = GraphRequest.newMeRequest( accessToken, new GraphRequest.GraphJSONObjectCallback() {
             @Override
             public void onCompleted(JSONObject object, GraphResponse response) {
-                Log.v("LoginActivity", response.getRawResponse());
+                String rawResponse = response.getRawResponse();
+                Log.v(FacebookManager.class.getSimpleName(), rawResponse);
+                CustomSharedPreferences.addUser(activity, User.JsonToUser(rawResponse));
+                ((LoginActivity)activity).doLogin();
             }
         });
         request.executeAsync();

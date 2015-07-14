@@ -169,7 +169,7 @@ public class MyDataBaseSQLite extends SQLiteOpenHelper {
                     while (!cursor.isAfterLast()) {
                         long id = Long.parseLong(cursor.getString(cursor.getColumnIndex(_ID)));
                         String jsonString = cursor.getString(cursor.getColumnIndex(_TODO_JSON));
-                        final Todo todo = Todo.JsonToProject(jsonString);
+                        final Todo todo = Todo.JsonToTodo(jsonString);
                         todo.setId(id);
 
                         List<Todo> todos = todoMap.get(todo.getKindID());

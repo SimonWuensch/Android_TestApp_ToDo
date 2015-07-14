@@ -45,7 +45,7 @@ public class Todo {
         return genson.serialize(this);
     }
 
-    public static Todo JsonToProject(String jsonString){
+    public static Todo JsonToTodo(String jsonString){
         Genson genson = new Genson();
         return genson.deserialize(jsonString, Todo.class);
     }

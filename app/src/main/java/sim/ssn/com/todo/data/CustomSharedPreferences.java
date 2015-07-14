@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import sim.ssn.com.todo.activity.LoginActivity;
 import sim.ssn.com.todo.resource.User;
 
 /**
@@ -18,7 +17,7 @@ public class CustomSharedPreferences {
 
     public static void addUser(Activity activity, User user){
         SharedPreferences.Editor editor = activity.getSharedPreferences(SHAREDPREFSKEY, Context.MODE_PRIVATE).edit();
-        editor.putString(EXTRALOGINNAME, user.getUserName());
+        editor.putString(EXTRALOGINNAME, user.getName());
         editor.putString(EXTRALOGINPASSWORD, user.getPassword());
         editor.commit();
     }
@@ -27,7 +26,8 @@ public class CustomSharedPreferences {
         SharedPreferences pref = activity.getSharedPreferences(SHAREDPREFSKEY, Context.MODE_PRIVATE);
         final String username = pref.getString(EXTRALOGINNAME, User.DEFAULTUSERNAME).toString();
         final String password = pref.getString(EXTRALOGINPASSWORD, User.DEFAULTPASSWORD).toString();
-        return new User(username, password);
+        User user = new User(username, password);
+        return user;
     }
 
     public static void removeUser(Activity activity){
