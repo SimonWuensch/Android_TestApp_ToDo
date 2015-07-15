@@ -1,4 +1,4 @@
-package sim.ssn.com.todo.fragment.kind;
+package sim.ssn.com.todo.fragment.todo;
 
 import android.app.Activity;
 import android.os.Bundle;

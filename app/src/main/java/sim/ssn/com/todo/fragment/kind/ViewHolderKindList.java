@@ -1,4 +1,4 @@
-package sim.ssn.com.todo.fragment.todo;
+package sim.ssn.com.todo.fragment.kind;
 
 import android.app.Activity;
 import android.support.v7.widget.RecyclerView;

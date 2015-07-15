@@ -1,11 +1,10 @@
-package sim.ssn.com.todo.fragment.kind;
+package sim.ssn.com.todo.fragment.todo;
 
 import android.app.Activity;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 

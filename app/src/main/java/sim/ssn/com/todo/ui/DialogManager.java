@@ -14,6 +14,7 @@ import android.widget.Toast;
 import sim.ssn.com.todo.R;
 import sim.ssn.com.todo.activity.MainActivity;
 import sim.ssn.com.todo.data.MyDataBaseSQLite;
+import sim.ssn.com.todo.notification.NotificationHandler;
 import sim.ssn.com.todo.resource.Kind;
 import sim.ssn.com.todo.resource.Todo;
 
@@ -106,6 +107,7 @@ public class DialogManager {
     }
 
     public static void showTodoDialog(final Activity activity, final Todo todo){
+        final NotificationHandler notificationHandler = new NotificationHandler(activity);
         final DialogTodoHandler todoViewHandler = new DialogTodoHandler(activity, todo);
         View promptView = todoViewHandler.getRootView();
         final EditText etDescription = (EditText) promptView.findViewById(R.id.dialog_todo_etDescription);
@@ -117,23 +119,28 @@ public class DialogManager {
                 .setPositiveButton(ADDBUTTON,
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
+                                Todo finalTodo = todoViewHandler.getTodo();
                                 String positiveButtonText = ((AlertDialog) dialog).getButton(AlertDialog.BUTTON_POSITIVE).getText().toString();
                                 if (positiveButtonText.equals(DELETEBUTTON)) {
-                                    database.deleteTodo(todo);
+                                    database.deleteTodo(finalTodo);
+                                    notificationHandler.throwRemoveTodoNotification(todo, Long.toString(finalTodo.getId()), todo.getDescription());
                                 } else if (positiveButtonText.equals(UPDATEBUTTON)) {
-                                    database.updateTodo(todoViewHandler.getTodo());
-                                }else if (positiveButtonText.equals(ADDBUTTON)) {
-                                    if(todoViewHandler.getTodo().getDescription().length() > 0)
-                                        database.addTodo(todoViewHandler.getTodo());
+                                    database.updateTodo(finalTodo);
+                                    notificationHandler.throwEditTodoNotification(finalTodo, Long.toString(todo.getId()), todo.getDescription());
+                                } else if (positiveButtonText.equals(ADDBUTTON)) {
+                                    if (finalTodo.getDescription().length() > 0) {
+                                        database.addTodo(finalTodo);
+                                        notificationHandler.throwAddTodoNotification(finalTodo, Long.toString(todo.getId()), todo.getDescription());
+                                    }
                                 }
                                 ((MainActivity) activity).handleCardClick(todo.getKindID());
                             }
                         })
                 .setNegativeButton(CANCELBUTTON, new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                dialog.cancel();
-                            }
-                        }).create();
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                }).create();
 
         alertDialog.setOnShowListener(new DialogInterface.OnShowListener() {
             @Override

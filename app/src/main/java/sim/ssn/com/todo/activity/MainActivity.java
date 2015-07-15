@@ -2,7 +2,6 @@ package sim.ssn.com.todo.activity;
 
 import android.app.Activity;
 import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
@@ -18,8 +17,8 @@ import com.facebook.login.LoginManager;
 import sim.ssn.com.todo.R;
 import sim.ssn.com.todo.data.CustomSharedPreferences;
 import sim.ssn.com.todo.data.MyDataBaseSQLite;
-import sim.ssn.com.todo.fragment.kind.TodoListFragment;
-import sim.ssn.com.todo.fragment.todo.KindListFragment;
+import sim.ssn.com.todo.fragment.todo.TodoListFragment;
+import sim.ssn.com.todo.fragment.kind.KindListFragment;
 import sim.ssn.com.todo.listener.CustomListener;
 import sim.ssn.com.todo.resource.Kind;
 import sim.ssn.com.todo.resource.Todo;
