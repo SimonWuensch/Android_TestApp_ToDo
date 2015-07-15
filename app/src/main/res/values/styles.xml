@@ -1,7 +1,12 @@
 <resources>
 
-    <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light">
+    </style>
+
+    <style name="speciﬁcButtonStyle" >
+        <item name="android:padding">4dp</item>
+        <item name="android:textAppearance">?android:attr/textAppearanceMedium</item>
+        <item name="android:background">@drawable/background__one</item>
     </style>
 
 </resources>

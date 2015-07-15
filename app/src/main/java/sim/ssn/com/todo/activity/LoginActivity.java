@@ -33,16 +33,13 @@ import sim.ssn.com.todo.resource.User;
 
 public class LoginActivity extends Activity {
 
-    private final static int FACEBOOK_REQUEST_CODE = 20;
     private static String TAG = LoginActivity.class.getSimpleName();
 
     private EditText etLoginName;
     private EditText etLoginPassword;
     private Button bLogin;
 
-    private LoginButton buttonToLoginWithFacebook;
-    private CallbackManager mCallbackManager;
-
+    private FacebookManager facebookManager;
     private Intent mainActivityIntent;
 
     @Override
@@ -64,6 +61,8 @@ public class LoginActivity extends Activity {
     }
 
     private void initVariables(){
+        facebookManager = new FacebookManager(this);
+
         this.etLoginName = (EditText) findViewById(R.id.activity_login_etName);
         this.etLoginPassword = (EditText) findViewById(R.id.activity_login_etPassword);
         this.bLogin = (Button) findViewById(R.id.activity_login_bLogin);
@@ -85,31 +84,8 @@ public class LoginActivity extends Activity {
                 }else{
                     Toast.makeText(LoginActivity.this, "Login fehlgeschlagen! Bitte Logindaten überprüfen.", Toast.LENGTH_SHORT).show();
                 }
-
             }
         });
-
-        mCallbackManager = CallbackManager.Factory.create();
-
-        buttonToLoginWithFacebook = (LoginButton) findViewById(R.id.activity_login_bFaceBook);
-        buttonToLoginWithFacebook.setReadPermissions("public_profile","email","user_birthday");
-        buttonToLoginWithFacebook.registerCallback(mCallbackManager,
-                new FacebookCallback<LoginResult>() {
-                    public void onSuccess(LoginResult loginResult) {
-                        Log.d("FB", "Access Token: " + loginResult.getAccessToken());
-                        FacebookManager.getFacebookProfile(LoginActivity.this, loginResult.getAccessToken());
-                    }
-                    @Override
-                    public void onCancel() {
-                        Log.d("FB", "Cancel");
-                    }
-
-                    @Override
-                    public void onError(FacebookException e) {
-                        e.printStackTrace();
-                        Log.d("FB", "Error");
-                    }
-                }, FACEBOOK_REQUEST_CODE );
     }
 
     public void doLogin(){
@@ -120,8 +96,8 @@ public class LoginActivity extends Activity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         int expected = CallbackManagerImpl.RequestCodeOffset.Login.toRequestCode();
-        if( requestCode == expected ){
-            mCallbackManager.onActivityResult(requestCode,resultCode, data);
+        if(requestCode == expected){
+            facebookManager.getmCallbackManager().onActivityResult(requestCode, resultCode, data);
         }
     }
 

@@ -41,19 +41,20 @@ public class DialogManager {
                 .setPositiveButton(ADDBUTTON,
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
-                                Button positiveButton = ((AlertDialog) dialog).getButton(AlertDialog.BUTTON_POSITIVE);
-                                if (positiveButton.getText().toString().equals(DELETEBUTTON)) {
+                                String positiveButtonText = ((AlertDialog) dialog).getButton(AlertDialog.BUTTON_POSITIVE).getText().toString();
+                                if (positiveButtonText.equals(DELETEBUTTON)) {
                                     database.deleteKind(kind);
-                                } else if (positiveButton.getText().toString().equals(UPDATEBUTTON)) {
+                                } else if (positiveButtonText.equals(UPDATEBUTTON)) {
                                     database.updateKind(kind, etKindName.getText().toString());
-                                } else if (positiveButton.getText().toString().equals(ADDBUTTON)) {
-                                    if (etKindName.getText().toString().length() > 0) {
-                                        database.addKind(etKindName.getText().toString());
+                                } else if (positiveButtonText.equals(ADDBUTTON)) {
+                                    String kindName = etKindName.getText().toString();
+                                    if (kindName.length() > 0) {
+                                        database.addKind(kindName);
                                     } else {
                                         Toast.makeText(activity, "Der Listenname darf nicht leer sein!", Toast.LENGTH_SHORT).show();
                                     }
                                 }
-                                ((MainActivity) activity).showKindListFragment(true);
+                                ((MainActivity) activity).showKindListFragment(false);
                             }
                         })
                 .setNegativeButton(CANCELBUTTON,
@@ -66,9 +67,7 @@ public class DialogManager {
         alertDialog.setOnShowListener(new DialogInterface.OnShowListener() {
             @Override
             public void onShow(final DialogInterface dialog) {
-                Button positiveButton = ((AlertDialog) dialog)
-                        .getButton(AlertDialog.BUTTON_POSITIVE);
-
+                Button positiveButton = ((AlertDialog) dialog).getButton(AlertDialog.BUTTON_POSITIVE);
                 if(kind == null){
                     positiveButton.setText(ADDBUTTON);
                 }else {
@@ -85,8 +84,7 @@ public class DialogManager {
 
                         @Override
                         public void afterTextChanged(Editable s) {
-                            Button positiveButton = ((AlertDialog) dialog)
-                                    .getButton(AlertDialog.BUTTON_POSITIVE);
+                            Button positiveButton = ((AlertDialog) dialog).getButton(AlertDialog.BUTTON_POSITIVE);
                             String kindName = etKindName.getText().toString();
                             if (kind.getName().equals(kindName)) {
                                 positiveButton.setText(DELETEBUTTON);
@@ -119,20 +117,19 @@ public class DialogManager {
                 .setPositiveButton(ADDBUTTON,
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
-                                Button positiveButton = ((AlertDialog) dialog).getButton(AlertDialog.BUTTON_POSITIVE);
-                                if (positiveButton.getText().toString().equals(DELETEBUTTON)) {
+                                String positiveButtonText = ((AlertDialog) dialog).getButton(AlertDialog.BUTTON_POSITIVE).getText().toString();
+                                if (positiveButtonText.equals(DELETEBUTTON)) {
                                     database.deleteTodo(todo);
-                                } else if (positiveButton.getText().toString().equals(UPDATEBUTTON)) {
+                                } else if (positiveButtonText.equals(UPDATEBUTTON)) {
                                     database.updateTodo(todoViewHandler.getTodo());
-                                }else if (positiveButton.getText().toString().equals(ADDBUTTON)) {
+                                }else if (positiveButtonText.equals(ADDBUTTON)) {
                                     if(todoViewHandler.getTodo().getDescription().length() > 0)
                                         database.addTodo(todoViewHandler.getTodo());
                                 }
                                 ((MainActivity) activity).handleCardClick(todo.getKindID());
                             }
                         })
-                .setNegativeButton(CANCELBUTTON,
-                        new DialogInterface.OnClickListener() {
+                .setNegativeButton(CANCELBUTTON, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
                                 dialog.cancel();
                             }
@@ -141,9 +138,7 @@ public class DialogManager {
         alertDialog.setOnShowListener(new DialogInterface.OnShowListener() {
             @Override
             public void onShow(final DialogInterface dialog) {
-                Button positiveButton = ((AlertDialog) dialog)
-                        .getButton(AlertDialog.BUTTON_POSITIVE);
-
+                Button positiveButton = ((AlertDialog) dialog).getButton(AlertDialog.BUTTON_POSITIVE);
                 if(todo.getId() <= 0){
                     positiveButton.setText(ADDBUTTON);
                 }else {
@@ -160,8 +155,7 @@ public class DialogManager {
 
                         @Override
                         public void afterTextChanged(Editable s) {
-                            Button positiveButton = ((AlertDialog) dialog)
-                                    .getButton(AlertDialog.BUTTON_POSITIVE);
+                            Button positiveButton = ((AlertDialog) dialog).getButton(AlertDialog.BUTTON_POSITIVE);
                             String description = etDescription.getText().toString();
                             if (todo.getDescription().equals(description)) {
                                 positiveButton.setText(DELETEBUTTON);

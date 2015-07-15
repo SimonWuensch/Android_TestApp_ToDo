@@ -26,7 +26,6 @@ import sim.ssn.com.todo.resource.Todo;
 import sim.ssn.com.todo.resource.User;
 import sim.ssn.com.todo.ui.DialogManager;
 
-
 public class MainActivity extends ActionBarActivity implements CustomListener{
 
     public static String FRAGMENT_TODOLIST = "orderlistfragment";
@@ -40,12 +39,16 @@ public class MainActivity extends ActionBarActivity implements CustomListener{
         requestWindowFeature(Window.FEATURE_ACTION_BAR);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        showKindListFragment(false);
+        initVariables();
+    }
+
+    private void initVariables(){
         dataBase = new MyDataBaseSQLite(this);
 
         TextView etLoginName = (TextView) findViewById(R.id.activity_main_tvLoginName);
         User user = CustomSharedPreferences.getUser(this);
         etLoginName.setText(user.getName());
-        showKindListFragment(true);
     }
 
     @Override
@@ -67,12 +70,28 @@ public class MainActivity extends ActionBarActivity implements CustomListener{
         return super.onOptionsItemSelected(item);
     }
 
-    public void showKindListFragment(boolean showNew){
-        if(showNew){
-            getFragmentManager().beginTransaction().replace(R.id.First_flFragment_Container, new KindListFragment(), FRAGMENT_KINDLIST).commit();
-            return;
+    public void showKindListFragment(boolean withFlipIn){
+        if(withFlipIn) {
+            getFragmentManager().beginTransaction()
+                    .setCustomAnimations(R.animator.flip_in, R.animator.flip_out)
+                    .replace(R.id.First_flFragment_Container, new KindListFragment(), FRAGMENT_KINDLIST)
+                    .addToBackStack(null)
+                    .commit();
         }
-        getFragmentManager().beginTransaction().replace(R.id.First_flFragment_Container, kindListFragment, FRAGMENT_KINDLIST).commit();
+        else{
+            getFragmentManager().beginTransaction()
+                    .replace(R.id.First_flFragment_Container, new KindListFragment(), FRAGMENT_KINDLIST)
+                    .addToBackStack(null)
+                    .commit();
+        }
+    }
+
+    public void showTodoListFragment(long kindId){
+        getFragmentManager().beginTransaction()
+                .setCustomAnimations(R.animator.flip_in, R.animator.flip_out)
+                .replace(R.id.First_flFragment_Container, TodoListFragment.newInstance(kindId), FRAGMENT_TODOLIST)
+                .addToBackStack(FRAGMENT_TODOLIST)
+                .commit();
     }
 
     @Override
@@ -85,7 +104,7 @@ public class MainActivity extends ActionBarActivity implements CustomListener{
         }
     }
 
-    public String getActiveFragment() {
+    private String getActiveFragment() {
         FragmentManager fragmentManager = getFragmentManager();
         if(fragmentManager.getBackStackEntryCount() == 0) {
             return null;
@@ -98,10 +117,7 @@ public class MainActivity extends ActionBarActivity implements CustomListener{
     @Override
      public void handleCardClick(long kindId) {
         Log.d(MainActivity.class.getSimpleName(), "Kind Clicked: " + kindId);
-        FragmentTransaction fragmentManager =  getFragmentManager().beginTransaction();
-        fragmentManager.replace(R.id.First_flFragment_Container, TodoListFragment.newInstance(kindId), FRAGMENT_TODOLIST);
-        fragmentManager.addToBackStack(FRAGMENT_TODOLIST);
-        fragmentManager.commit();
+        showTodoListFragment(kindId);
     }
 
     @Override
