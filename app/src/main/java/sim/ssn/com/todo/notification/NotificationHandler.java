@@ -26,25 +26,25 @@ public class NotificationHandler {
     }
 
     public void throwAddTodoNotification(Todo todo, String info, String text){
-        throwNotification(todo.isFinished(), TODOADDED, info, text);
+        throwNotification(todo.isImportant(), TODOADDED, info, text);
     }
 
-    public void throwRemoveTodoNotification(Todo todo, String info, String text){
-        throwNotification(todo.isFinished(), TODOREMOVED, info, text);
+    public void throwDeleteTodoNotification(Todo todo, String info, String text){
+        throwNotification(todo.isImportant(), TODOREMOVED, info, text);
     }
 
-    public void throwEditTodoNotification(Todo todo, String info, String text){
-        throwNotification(todo.isFinished(), TODOEDITED, info, text);
+    public void throwUpdateTodoNotification(Todo todo, String info, String text){
+        throwNotification(todo.isImportant(), TODOEDITED, info, text);
     }
 
-    public void throwNotification(boolean isFinished, String title, String info, String text) {
+    public void throwNotification(boolean isImportant, String title, String info, String text) {
         Intent myIntent = new Intent(context, MainActivity.class);
         PendingIntent viewPendingIntent = PendingIntent.getActivity(context, 0, myIntent, 0);
 
         long[] vibrate = new long[]{1000, 500, 1000};
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context)
                 .setContentTitle(title)
-                .setSmallIcon(isFinished ? R.drawable.icon_star_not_filled : R.drawable.icon_star_filled)
+                .setSmallIcon(isImportant ? R.drawable.icon_star_filled : R.drawable.icon_star_not_filled)
                 .setWhen(System.currentTimeMillis())
                 .setContentInfo(info)
                 .setContentText(text)

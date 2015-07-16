@@ -13,6 +13,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import sim.ssn.com.todo.notification.NotificationHandler;
 import sim.ssn.com.todo.resource.Kind;
 import sim.ssn.com.todo.resource.Todo;
 
@@ -33,6 +34,7 @@ public class MyDataBaseSQLite extends SQLiteOpenHelper {
     private boolean updateKindList = true;
     private boolean updateTodoMap = true;
 
+    private NotificationHandler notificationHandler;
     private Map<Long, List<Todo>> todoMap;
     private List<Kind> kindList;
 
@@ -71,6 +73,7 @@ public class MyDataBaseSQLite extends SQLiteOpenHelper {
 
     public MyDataBaseSQLite(Context context){
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
+        notificationHandler = new NotificationHandler(context);
         ifFirstStart();
     }
 
@@ -215,6 +218,7 @@ public class MyDataBaseSQLite extends SQLiteOpenHelper {
             Log.d(TAG, "ADD TODO: " + todo.toJson());
         }
         updateTodoMap = true;
+        notificationHandler.throwAddTodoNotification(todo, Long.toString(todo.getId()), todo.getDescription());
     }
 
     public void deleteKind(Kind kind){
@@ -243,6 +247,7 @@ public class MyDataBaseSQLite extends SQLiteOpenHelper {
         }finally{
             Log.d(TAG, "DELETE: " + todo.toJson());
         }
+        notificationHandler.throwDeleteTodoNotification(todo, Long.toString(todo.getId()), todo.getDescription());
     }
 
     public void updateKind(Kind kind, String newKindName){
@@ -272,6 +277,6 @@ public class MyDataBaseSQLite extends SQLiteOpenHelper {
         }finally{
             Log.d(TAG, "UPDATE TODO " + newTodo.toJson());
         }
-        //todoMap = getTodoMap();
+        notificationHandler.throwUpdateTodoNotification(newTodo, Long.toString(newTodo.getId()), newTodo.getDescription());
     }
 }

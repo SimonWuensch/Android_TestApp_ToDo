@@ -2,12 +2,7 @@ package sim.ssn.com.todo.activity;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
-import android.content.pm.Signature;
 import android.os.Bundle;
-import android.util.Base64;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -15,16 +10,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.facebook.CallbackManager;
-import com.facebook.FacebookCallback;
-import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
 import com.facebook.internal.CallbackManagerImpl;
-import com.facebook.login.LoginResult;
-import com.facebook.login.widget.LoginButton;
-
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 
 import sim.ssn.com.todo.R;
 import sim.ssn.com.todo.data.CustomSharedPreferences;
@@ -33,11 +20,8 @@ import sim.ssn.com.todo.resource.User;
 
 public class LoginActivity extends Activity {
 
-    private static String TAG = LoginActivity.class.getSimpleName();
-
     private EditText etLoginName;
     private EditText etLoginPassword;
-    private Button bLogin;
 
     private FacebookManager facebookManager;
     private Intent mainActivityIntent;
@@ -65,7 +49,7 @@ public class LoginActivity extends Activity {
 
         this.etLoginName = (EditText) findViewById(R.id.activity_login_etName);
         this.etLoginPassword = (EditText) findViewById(R.id.activity_login_etPassword);
-        this.bLogin = (Button) findViewById(R.id.activity_login_bLogin);
+        Button bLogin = (Button) findViewById(R.id.activity_login_bLogin);
 
         mainActivityIntent = new Intent(this, MainActivity.class);
         mainActivityIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP
@@ -99,20 +83,5 @@ public class LoginActivity extends Activity {
         if(requestCode == expected){
             facebookManager.getmCallbackManager().onActivityResult(requestCode, resultCode, data);
         }
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_login, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
     }
 }

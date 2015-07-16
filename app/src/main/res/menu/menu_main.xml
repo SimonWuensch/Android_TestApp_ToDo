@@ -13,7 +13,10 @@
                 android:title="Start UnBound Service" />
             <item
                 android:id="@+id/menu_activity_main_action_two"
-                android:title="Action 2" />
+                android:title="Start Bound Service" />
+            <item
+                android:id="@+id/menu_activity_main_action_three"
+                android:title="Start Google Map" />
         </menu>
     </item>
 

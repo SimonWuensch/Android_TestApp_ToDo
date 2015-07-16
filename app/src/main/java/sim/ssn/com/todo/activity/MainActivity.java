@@ -1,8 +1,6 @@
 package sim.ssn.com.todo.activity;
 
-import android.app.Activity;
 import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -16,6 +14,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.facebook.login.LoginManager;
 
@@ -30,7 +29,7 @@ import sim.ssn.com.todo.resource.Todo;
 import sim.ssn.com.todo.resource.User;
 import sim.ssn.com.todo.service.BoundService;
 import sim.ssn.com.todo.service.UnBoundService;
-import sim.ssn.com.todo.ui.DialogManager;
+import sim.ssn.com.todo.dialog.DialogManager;
 
 public class MainActivity extends ActionBarActivity implements CustomListener{
 
@@ -94,25 +93,30 @@ public class MainActivity extends ActionBarActivity implements CustomListener{
             LoginManager.getInstance().logOut();
             Intent intent = new Intent(this, LoginActivity.class);
             startActivity(intent);
-            return true;
         }else if(id == R.id.menu_activity_main_action_one) {
             startService(intentUnBoundService);
         }else if(id == R.id.menu_activity_main_action_two) {
-
+            Toast.makeText(this, "Bound Service sagt: " + boundService.foo(), Toast.LENGTH_SHORT).show();
+        }else if(id == R.id.menu_activity_main_action_three) {
+            Intent intent = new Intent(this, LocationActivity.class);
+            startActivity(intent);
         }
         return super.onOptionsItemSelected(item);
     }
 
     public void showKindListFragment(boolean withFlipIn){
-        FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction()
-            .replace(R.id.First_flFragment_Container, new KindListFragment(), FRAGMENT_KINDLIST)
-            .addToBackStack(null);
-
         if(withFlipIn) {
-            fragmentTransaction.setCustomAnimations(R.animator.flip_in, R.animator.flip_out);
+            getFragmentManager().beginTransaction()
+                    .setCustomAnimations(R.animator.flip_in, R.animator.flip_out)
+                    .replace(R.id.First_flFragment_Container, new KindListFragment(), FRAGMENT_KINDLIST)
+                    .addToBackStack(null)
+                    .commit();
+        }else{
+            getFragmentManager().beginTransaction()
+                    .replace(R.id.First_flFragment_Container, new KindListFragment(), FRAGMENT_KINDLIST)
+                    .addToBackStack(null)
+                    .commit();
         }
-
-        fragmentTransaction.commit();
     }
 
     public void showTodoListFragment(long kindId){
@@ -156,7 +160,7 @@ public class MainActivity extends ActionBarActivity implements CustomListener{
 
     @Override
     public MyDataBaseSQLite getDataBase(){
-       return dataBase;
+       return dataBase != null ? dataBase : new MyDataBaseSQLite(this);
     }
 
     @Override
