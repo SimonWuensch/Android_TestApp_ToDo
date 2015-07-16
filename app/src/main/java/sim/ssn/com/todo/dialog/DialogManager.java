@@ -25,7 +25,7 @@ public class DialogManager {
     private static String CANCELBUTTON = "abbrechen";
 
     public static void showKindDialog(final Activity activity){
-        showKindDialog(activity, null);
+        showKindDialog(activity, new Kind(-1, ""));
     }
 
     public static void showKindDialog(final Activity activity, final Kind kind){
@@ -61,45 +61,12 @@ public class DialogManager {
                             }
                         }).create();
 
-        alertDialog.setOnShowListener(new DialogInterface.OnShowListener() {
-            @Override
-            public void onShow(final DialogInterface dialog) {
-                Button positiveButton = ((AlertDialog) dialog).getButton(AlertDialog.BUTTON_POSITIVE);
-                if(kind == null){
-                    positiveButton.setText(ADDBUTTON);
-                }else {
-                    positiveButton.setText(DELETEBUTTON);
-                    etKindName.setText(kind.getName());
-                    etKindName.addTextChangedListener(new TextWatcher() {
-                        @Override
-                        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                        }
-
-                        @Override
-                        public void onTextChanged(CharSequence s, int start, int before, int count) {
-                        }
-
-                        @Override
-                        public void afterTextChanged(Editable s) {
-                            Button positiveButton = ((AlertDialog) dialog).getButton(AlertDialog.BUTTON_POSITIVE);
-                            String kindName = etKindName.getText().toString();
-                            if (kind.getName().equals(kindName)) {
-                                positiveButton.setText(DELETEBUTTON);
-                            } else {
-                                positiveButton.setText(UPDATEBUTTON);
-                            }
-
-                            if(kindName.length() <= 0){
-                                positiveButton.setEnabled(false);
-                            }else{
-                                positiveButton.setEnabled(true);
-                            }
-                        }
-                    });
-                }
-            }
-        });
+        setOnShowListener(alertDialog, etKindName, kind);
         alertDialog.show();
+    }
+
+    public static void showTodoDialog(final Activity activity, long kindId){
+        showTodoDialog(activity, new Todo(kindId, ""));
     }
 
     public static void showTodoDialog(final Activity activity, final Todo todo){
@@ -114,15 +81,14 @@ public class DialogManager {
                 .setPositiveButton(ADDBUTTON,
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
-                                Todo finalTodo = todoViewHandler.getTodo();
                                 String positiveButtonText = ((AlertDialog) dialog).getButton(AlertDialog.BUTTON_POSITIVE).getText().toString();
                                 if (positiveButtonText.equals(DELETEBUTTON)) {
-                                    database.deleteTodo(finalTodo);
+                                    database.deleteTodo(todo);
                                     } else if (positiveButtonText.equals(UPDATEBUTTON)) {
-                                    database.updateTodo(finalTodo);
+                                    database.updateTodo(todoViewHandler.getTodo());
                                 } else if (positiveButtonText.equals(ADDBUTTON)) {
-                                    if (finalTodo.getDescription().length() > 0) {
-                                        database.addTodo(finalTodo);
+                                    if (todoViewHandler.getTodo().getDescription().length() > 0) {
+                                        database.addTodo(todoViewHandler.getTodo());
                                     }
                                 }
                                 ((MainActivity) activity).handleCardClick(todo.getKindID());
@@ -134,16 +100,33 @@ public class DialogManager {
                     }
                 }).create();
 
+        setOnShowListener(alertDialog, etDescription, todo);
+        alertDialog.show();
+    }
+
+    private static void setOnShowListener(AlertDialog alertDialog, final EditText editText, Object object){
+        final String source;
+        final long id;
+        if(object instanceof Kind){
+            source = ((Kind)object).getName();
+            id = ((Kind)object).getId();
+        }else if(object instanceof Todo){
+            source = ((Todo)object).getDescription();
+            id = ((Todo)object).getId();
+        }else{
+            throw new NullPointerException("Object have to instanceof Kind or Todo!");
+        }
+
         alertDialog.setOnShowListener(new DialogInterface.OnShowListener() {
             @Override
             public void onShow(final DialogInterface dialog) {
                 Button positiveButton = ((AlertDialog) dialog).getButton(AlertDialog.BUTTON_POSITIVE);
-                if(todo.getId() <= 0){
+                if(id <= 0){
                     positiveButton.setText(ADDBUTTON);
                 }else {
                     positiveButton.setText(DELETEBUTTON);
-                    etDescription.setText(todo.getDescription());
-                    etDescription.addTextChangedListener(new TextWatcher() {
+                    editText.setText(source);
+                    editText.addTextChangedListener(new TextWatcher() {
                         @Override
                         public void beforeTextChanged(CharSequence s, int start, int count, int after) {
                         }
@@ -155,8 +138,8 @@ public class DialogManager {
                         @Override
                         public void afterTextChanged(Editable s) {
                             Button positiveButton = ((AlertDialog) dialog).getButton(AlertDialog.BUTTON_POSITIVE);
-                            String description = etDescription.getText().toString();
-                            if (todo.getDescription().equals(description)) {
+                            String description = editText.getText().toString();
+                            if (source.equals(description)) {
                                 positiveButton.setText(DELETEBUTTON);
                             } else {
                                 positiveButton.setText(UPDATEBUTTON);
@@ -172,7 +155,5 @@ public class DialogManager {
                 }
             }
         });
-
-        alertDialog.show();
     }
 }

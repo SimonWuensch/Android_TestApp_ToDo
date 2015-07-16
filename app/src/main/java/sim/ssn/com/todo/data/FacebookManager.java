@@ -40,7 +40,7 @@ public class FacebookManager {
         initFacebookButton();
     }
 
-    public CallbackManager getmCallbackManager(){
+    public CallbackManager getCallbackManager(){
         return mCallbackManager;
     }
 

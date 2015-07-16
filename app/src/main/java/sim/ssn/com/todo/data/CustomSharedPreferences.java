@@ -6,9 +6,6 @@ import android.content.SharedPreferences;
 
 import sim.ssn.com.todo.resource.User;
 
-/**
- * Created by Simon on 14.07.2015.
- */
 public class CustomSharedPreferences {
 
     private static String SHAREDPREFSKEY = "sharedPrefferencesKey";
@@ -26,8 +23,7 @@ public class CustomSharedPreferences {
         SharedPreferences pref = activity.getSharedPreferences(SHAREDPREFSKEY, Context.MODE_PRIVATE);
         final String username = pref.getString(EXTRALOGINNAME, User.DEFAULTUSERNAME).toString();
         final String password = pref.getString(EXTRALOGINPASSWORD, User.DEFAULTPASSWORD).toString();
-        User user = new User(username, password);
-        return user;
+        return new User(username, password);
     }
 
     public static void removeUser(Activity activity){

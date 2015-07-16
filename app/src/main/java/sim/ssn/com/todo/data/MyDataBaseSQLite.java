@@ -17,9 +17,6 @@ import sim.ssn.com.todo.notification.NotificationHandler;
 import sim.ssn.com.todo.resource.Kind;
 import sim.ssn.com.todo.resource.Todo;
 
-/**
- * Created by Simon on 22.04.2015.
- */
 public class MyDataBaseSQLite extends SQLiteOpenHelper {
 
     private List<String> defaultKindList = new ArrayList<String>(){
@@ -155,7 +152,8 @@ public class MyDataBaseSQLite extends SQLiteOpenHelper {
                     }
                 }
             }
-            cursor.close();
+            if(cursor != null)
+                cursor.close();
             updateKindList = false;
             return kindList;
         }else{
@@ -183,7 +181,8 @@ public class MyDataBaseSQLite extends SQLiteOpenHelper {
                     }
                 }
             }
-            cursor.close();
+            if(cursor != null)
+                cursor.close();
             updateTodoMap = false;
             return todoMap;
         }else{

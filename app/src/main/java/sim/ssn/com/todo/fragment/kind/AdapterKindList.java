@@ -13,46 +13,32 @@ import sim.ssn.com.todo.listener.CustomListener;
 import sim.ssn.com.todo.resource.Kind;
 import sim.ssn.com.todo.resource.Todo;
 
-/**
- * Created by Simon on 04.06.2015.
- */
 public class AdapterKindList extends  RecyclerView.Adapter<ViewHolderKindList> {
-    //private Map<String, List<Todo>> todoMap;
-    private List<Kind> kindlist;
+    private List<Kind> kindList;
     private int layout;
-    private Activity activity;
     private View inflatedView;
     private CustomListener customListener;
 
 
     public AdapterKindList(int layout, Activity activity){
         this.customListener = (CustomListener) activity;
-        this.kindlist = customListener.getDataBase().getKindList();
+        this.kindList = customListener.getDataBase().getKindList();
         this.layout = layout;
-        this.activity = activity;
     }
 
     @Override
     public ViewHolderKindList onCreateViewHolder(ViewGroup viewGroup, int position) {
         inflatedView = LayoutInflater.from(viewGroup.getContext()).inflate(layout, viewGroup, false);
-        ViewHolderKindList viewHolder = new ViewHolderKindList(activity, inflatedView);
-        return viewHolder;
+        return new ViewHolderKindList(inflatedView);
     }
 
     @Override
     public void onBindViewHolder(ViewHolderKindList holder, int position) {
-        final Kind kind  = kindlist.get(position);
+        final Kind kind  = kindList.get(position);
         final List<Todo> todoList = customListener.getDataBase().getTodoListByKind(kind.getId());
         holder.assignData(kind.getName(), todoList.size());
-        final int pos = position;
 
-        inflatedView.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View view) {
-                customListener.handleEditKind(kind);
-                return false;
-            }
-        });
+        inflatedView.setOnLongClickListener(customListener.handleEditKind(kind));
         inflatedView.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent ev) {
@@ -72,6 +58,6 @@ public class AdapterKindList extends  RecyclerView.Adapter<ViewHolderKindList> {
 
     @Override
     public int getItemCount() {
-        return kindlist.size();
+        return kindList.size();
     }
 }

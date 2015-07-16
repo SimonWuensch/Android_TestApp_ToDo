@@ -6,9 +6,6 @@ import com.owlike.genson.annotation.JsonIgnore;
 import java.util.Date;
 import java.util.List;
 
-/**
- * Created by Simon on 04.06.2015.
- */
 public class Todo {
 
     @JsonIgnore

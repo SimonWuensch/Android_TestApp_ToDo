@@ -11,9 +11,6 @@ import java.util.List;
 import sim.ssn.com.todo.listener.CustomListener;
 import sim.ssn.com.todo.resource.Todo;
 
-/**
- * Created by Simon on 05.06.2015.
- */
 public class AdapterTodoList extends RecyclerView.Adapter<ViewHolderTodoList>{
     private List<Todo> todoList;
     private int layout;
@@ -31,21 +28,14 @@ public class AdapterTodoList extends RecyclerView.Adapter<ViewHolderTodoList>{
     @Override
     public ViewHolderTodoList onCreateViewHolder(ViewGroup viewGroup, int position) {
         inflatedView = LayoutInflater.from(viewGroup.getContext()).inflate(layout, viewGroup, false);
-        ViewHolderTodoList viewHolder = new ViewHolderTodoList(activity, inflatedView);
-        return viewHolder;
+        return new ViewHolderTodoList(activity, inflatedView);
     }
 
     @Override
     public void onBindViewHolder(ViewHolderTodoList holder, final int position) {
         final Todo todo = todoList.get(position);
         holder.assignData(todo);
-        inflatedView.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View view) {
-                customListener.handleEditTodo(todoList.get(position));
-                return false;
-            }
-        });
+        inflatedView.setOnLongClickListener(customListener.handleEditTodo(todoList.get(position)));
         inflatedView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

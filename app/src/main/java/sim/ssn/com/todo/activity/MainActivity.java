@@ -91,8 +91,7 @@ public class MainActivity extends ActionBarActivity implements CustomListener{
         if (id == R.id.menu_activity_main_logout) {
             CustomSharedPreferences.removeUser(this);
             LoginManager.getInstance().logOut();
-            Intent intent = new Intent(this, LoginActivity.class);
-            startActivity(intent);
+            startActivity(new Intent(this, LoginActivity.class));
         }else if(id == R.id.menu_activity_main_action_one) {
             startService(intentUnBoundService);
         }else if(id == R.id.menu_activity_main_action_two) {
@@ -164,8 +163,14 @@ public class MainActivity extends ActionBarActivity implements CustomListener{
     }
 
     @Override
-    public void handleEditTodo(Todo todo){
-        DialogManager.showTodoDialog(this,todo);
+    public View.OnLongClickListener handleEditTodo(final Todo todo){
+        return new View.OnLongClickListener(){
+            @Override
+            public boolean onLongClick(View v) {
+                DialogManager.showTodoDialog(MainActivity.this, todo);
+                return false;
+            }
+        };
     }
 
     @Override
@@ -173,14 +178,20 @@ public class MainActivity extends ActionBarActivity implements CustomListener{
         return new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                DialogManager.showTodoDialog(MainActivity.this, new Todo(kindId, ""));
+                DialogManager.showTodoDialog(MainActivity.this, kindId);
             }
         };
     }
 
     @Override
-    public void handleEditKind(Kind kind){
-        DialogManager.showKindDialog(this, kind);
+    public View.OnLongClickListener handleEditKind(final Kind kind){
+        return new View.OnLongClickListener(){
+            @Override
+            public boolean onLongClick(View v) {
+                DialogManager.showKindDialog(MainActivity.this, kind);
+                return false;
+            }
+        };
     }
 
     @Override

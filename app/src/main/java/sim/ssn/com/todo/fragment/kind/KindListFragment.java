@@ -15,7 +15,6 @@ import sim.ssn.com.todo.listener.CustomListener;
 
 public class KindListFragment extends Fragment{
     private CustomListener clickListener;
-    private ImageView ivAdd;
 
         @Override
         public void onCreate(Bundle savedInstanceState) {
@@ -32,7 +31,7 @@ public class KindListFragment extends Fragment{
         public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_kind_list, container, false);
 
-                ivAdd = (ImageView) rootView.findViewById(R.id.fKind_ivAdd);
+                ImageView ivAdd = (ImageView) rootView.findViewById(R.id.fKind_ivAdd);
                 ivAdd.setOnClickListener(clickListener.handleAddKind());
 
                 RecyclerView mRecyclerView = (RecyclerView) rootView.findViewById(R.id.fKind_recyclerview);

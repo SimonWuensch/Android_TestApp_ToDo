@@ -12,13 +12,7 @@ import sim.ssn.com.todo.R;
 import sim.ssn.com.todo.listener.CustomListener;
 import sim.ssn.com.todo.resource.Todo;
 
-/**
- * Created by Simon on 05.06.2015.
- */
 public class ViewHolderTodoList extends RecyclerView.ViewHolder {
-
-    private Activity activity;
-    private View itemView;
 
     private TextView etDescription;
     private CheckBox cbFinished;
@@ -29,9 +23,7 @@ public class ViewHolderTodoList extends RecyclerView.ViewHolder {
 
     public ViewHolderTodoList(Activity activity, View itemView) {
         super(itemView);
-        this.activity = activity;
         this.customListener = (CustomListener)activity;
-        this.itemView = itemView;
 
         etDescription = (TextView) itemView.findViewById(R.id.CardView_todo_etDescription);
         cbFinished = (CheckBox) itemView.findViewById(R.id.CardView_todo_cbFinished);

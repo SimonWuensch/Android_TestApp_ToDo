@@ -37,7 +37,7 @@ public class LocationActivity extends Activity implements LocationListener {
 
     private Location location;
 
-    String SHA1 = "50:BE:A8:46:F6:F5:F2:BC:FD:E4:22:3C:F1:F5:59:E4:2D:F8:B8:73";
+    //"50:BE:A8:46:F6:F5:F2:BC:FD:E4:22:3C:F1:F5:59:E4:2D:F8:B8:73";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

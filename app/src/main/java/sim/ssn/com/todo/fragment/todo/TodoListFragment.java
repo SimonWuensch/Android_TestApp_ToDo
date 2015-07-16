@@ -22,7 +22,6 @@ public class TodoListFragment extends Fragment {
 
     private CustomListener clickListener;
 
-    private ImageView ivAdd;
     private List<Todo> todoList;
     private long kindId;
 
@@ -57,7 +56,7 @@ public class TodoListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_todo_list, container, false);
 
-        ivAdd = (ImageView) rootView.findViewById(R.id.fTodo_ivAdd);
+        ImageView ivAdd = (ImageView) rootView.findViewById(R.id.fTodo_ivAdd);
         ivAdd.setOnClickListener(clickListener.handleAddTodo(kindId));
 
         RecyclerView mRecyclerView = (RecyclerView) rootView.findViewById(R.id.fTodo_recyclerview);

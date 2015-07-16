@@ -1,8 +1,5 @@
 package sim.ssn.com.todo.resource;
 
-/**
- * Created by Simon on 06.06.2015.
- */
 public class Kind {
 
     private long id;

@@ -6,9 +6,6 @@ import android.content.Intent;
 
 import sim.ssn.com.todo.notification.NotificationHandler;
 
-/**
- * Created by Simon on 16.07.2015.
- */
 public class NotificationReceiver extends BroadcastReceiver {
 
     @Override

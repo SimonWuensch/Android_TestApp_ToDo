@@ -10,31 +10,23 @@ import android.widget.ImageView;
 import sim.ssn.com.todo.R;
 import sim.ssn.com.todo.resource.Todo;
 
-/**
- * Created by Simon on 07.06.2015.
- */
 public class DialogTodoHandler {
 
     private View rootView;
-    private Activity activity;
-    private int layout;
     private Todo todo;
 
     private EditText etDescription;
-    private CheckBox cbFinished;
     private ImageView ivStar;
 
     public DialogTodoHandler(Activity activity, Todo todo) {
-        this.activity = activity;
-        this.layout = R.layout.dialog_add_update_delete_todo;
         this.todo = todo;
-        this.rootView = LayoutInflater.from(activity).inflate(layout, null);
+        this.rootView = LayoutInflater.from(activity).inflate(R.layout.dialog_add_update_delete_todo, null);
         initElements();
     }
 
     private void initElements(){
+        CheckBox cbFinished = (CheckBox) rootView.findViewById(R.id.dialog_todo_cbFinished);
         etDescription = (EditText) rootView.findViewById(R.id.dialog_todo_etDescription);
-        cbFinished = (CheckBox) rootView.findViewById(R.id.dialog_todo_cbFinished);
         ivStar = (ImageView) rootView.findViewById(R.id.dialog_todo_ivStar);
 
         etDescription.setText(todo.getDescription());

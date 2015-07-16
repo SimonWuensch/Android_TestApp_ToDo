@@ -1,11 +1,7 @@
 package sim.ssn.com.todo.resource;
 
 import com.owlike.genson.Genson;
-import com.owlike.genson.annotation.JsonIgnore;
 
-/**
- * Created by Simon on 14.07.2015.
- */
 public class User {
 
     public static String DEFAULTUSERNAME = "defaultUser";
