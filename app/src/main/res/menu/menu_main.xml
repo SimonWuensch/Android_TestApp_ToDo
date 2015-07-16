@@ -4,8 +4,23 @@
     tools:context="sim.ssn.com.todo.activity.MainActivity">
 
     <item
-        android:id="@+id/menu_activity_main_logout"
-        android:title="logout"
-        android:orderInCategory="100"
-        app:showAsAction="always" />
+        android:id="@+id/file"
+        android:title="Actions"
+        app:showAsAction="always">
+        <menu>
+            <item
+                android:id="@+id/menu_activity_main_action_one"
+                android:title="Start UnBound Service" />
+            <item
+                android:id="@+id/menu_activity_main_action_two"
+                android:title="Action 2" />
+        </menu>
+    </item>
+
+    <item
+    android:id="@+id/menu_activity_main_logout"
+    android:title="logout"
+    android:orderInCategory="100"
+    app:showAsAction="always" />
+
 </menu>
